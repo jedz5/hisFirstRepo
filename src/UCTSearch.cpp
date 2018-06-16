@@ -561,7 +561,11 @@ bool UCTSearch::stop_thinking(int elapsed_centis, int time_for_move) const {
 void UCTWorker::operator()() {
     do {
         auto currstate = std::make_unique<GameState>(m_rootstate);
+		Time start;
         auto result = m_search->play_simulation(*currstate, m_root);
+		Time elapsed;
+		double cost = Time::timediff_seconds(start, elapsed);
+		myprintf("playout thread cost %.9f\n", cost);
         if (result.valid()) {
             m_search->increment_playouts();
         }
@@ -602,15 +606,19 @@ int UCTSearch::think(int color, passflag_t passflag) {
 
     bool keeprunning = true;
     int last_update = 0;
+	int index = 0;
     do {
         auto currstate = std::make_unique<GameState>(m_rootstate);
-
+		Time playoutStart;
         auto result = play_simulation(*currstate, m_root.get());
         if (result.valid()) {
             increment_playouts();
         }
 
         Time elapsed;
+		double cost = Time::timediff_seconds(playoutStart, elapsed);
+		myprintf("playout %d cost %.9f\n", index, cost);
+		index++;
         int elapsed_centis = Time::timediff_centis(start, elapsed);
 
         // output some stats every few seconds

@@ -393,7 +393,7 @@ int main(int argc, char *argv[]) {
     /* set board limits */
     auto komi = 7.5f;
     maingame->init_game(BOARD_SIZE, komi);
-
+	maingame->set_timecontrol(0, 1, 0, 0);
     if (cfg_benchmark) {
         cfg_quiet = false;
         benchmark(*maingame);
