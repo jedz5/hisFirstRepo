@@ -36,6 +36,7 @@
 #include "Training.h"
 #include "Utils.h"
 
+#include <boost/format.hpp>
 using namespace Utils;
 
 constexpr int UCTSearch::UNLIMITED_PLAYOUTS;
@@ -565,7 +566,9 @@ void UCTWorker::operator()() {
         auto result = m_search->play_simulation(*currstate, m_root);
 		Time elapsed;
 		double cost = Time::timediff_seconds(start, elapsed);
-		myprintf("playout thread cost %.9f\n", cost);
+		boost::format fmt = boost::format("playout thread cost %.9f\n") % cost;
+		std::string output = fmt.str();
+		log_input(output);
         if (result.valid()) {
             m_search->increment_playouts();
         }

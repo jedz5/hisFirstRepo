@@ -22,6 +22,7 @@
 #include "Random.h"
 #include "OpenCLScheduler.h"
 
+#include  "Utils.h"
 thread_local auto current_thread_gpu_num = size_t{0};
 OpenCLScheduler opencl;
 
@@ -69,12 +70,20 @@ void OpenCLScheduler::forward(const std::vector<net_t>& input,
                               std::vector<net_t>& output_pol,
                               std::vector<net_t>& output_val) {
     if (m_networks.size() == 1) {
+		Time start;
         m_networks[0]->forward(input, output_pol, output_val);
+		Time elapsed;
+		double cost = Time::timediff_seconds(start, elapsed);
+		Utils::myprintf("NN cpu cost %.9f\n",cost);
         return;
     }
 
     auto f = m_threadpool.add_task([this, &input, &output_pol, &output_val]{
+		Time start;
         m_networks[current_thread_gpu_num]->forward(input, output_pol, output_val);
+		Time elapsed;
+		double cost = Time::timediff_seconds(start, elapsed);
+		Utils::myprintf("NN GPU cost %.9f\n", cost);
     });
 
     f.get();

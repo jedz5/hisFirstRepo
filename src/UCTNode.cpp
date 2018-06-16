@@ -76,12 +76,8 @@ bool UCTNode::create_children(std::atomic<int>& nodecount,
     // We'll be the one queueing this node for expansion, stop others
     m_is_expanding = true;
     lock.unlock();
-	Time start;
     const auto raw_netlist = Network::get_scored_moves(
         &state, Network::Ensemble::RANDOM_SYMMETRY);
-	Time elapsed;
-	double cost = Time::timediff_seconds(start, elapsed);
-	myprintf("---NN cost %.9f\n", cost);
     // DCNN returns winrate as side to move
     m_net_eval = raw_netlist.winrate;
     const auto to_move = state.board.get_to_move();

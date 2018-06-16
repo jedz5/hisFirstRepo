@@ -128,7 +128,9 @@ void Utils::gtp_fail_printf(int id, const char *fmt, ...) {
     gtp_base_printf(id, "?", fmt, ap);
     va_end(ap);
 }
+void Utils::mylog(const std::string& str) {
 
+}
 void Utils::log_input(const std::string& input) {
     if (cfg_logfile_handle) {
         std::lock_guard<std::mutex> lock(IOmutex);
