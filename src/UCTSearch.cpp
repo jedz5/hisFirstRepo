@@ -618,10 +618,10 @@ int UCTSearch::think(int color, passflag_t passflag) {
             increment_playouts();
         }
 
-        Time elapsed;
-		double cost = Time::timediff_seconds(playoutStart, elapsed);
+		Time elapsed;
+		/*double cost = Time::timediff_seconds(playoutStart, elapsed);
 		myprintf("playout %d cost %.9f\n", index, cost);
-		index++;
+		index++;*/
         int elapsed_centis = Time::timediff_centis(start, elapsed);
 
         // output some stats every few seconds
