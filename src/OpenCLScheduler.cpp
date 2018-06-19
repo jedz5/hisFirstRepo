@@ -70,11 +70,11 @@ void OpenCLScheduler::forward(const std::vector<net_t>& input,
                               std::vector<net_t>& output_pol,
                               std::vector<net_t>& output_val) {
     if (m_networks.size() == 1) {
-		/*Time start;
+		Time start;
         m_networks[0]->forward(input, output_pol, output_val);
 		Time elapsed;
 		double cost = Time::timediff_seconds(start, elapsed);
-		Utils::myprintf("NN cpu cost %.9f\n",cost);*/
+		Utils::myprintf("NN GPU cost %.9f\n",cost);
 		m_networks[0]->forward(input, output_pol, output_val);
         return;
     }
